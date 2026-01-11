@@ -1,0 +1,16 @@
+{
+    "todos": [
+      {
+        "id": 3,
+        "title": "Tailwind CSS-i tətbiq et",
+        "completed": true,
+        "createdAt": "2026-01-11T11:00:00.000Z"
+      },
+      {
+        "title": "Task",
+        "completed": true,
+        "createdAt": "2026-01-11T10:56:30.189Z",
+        "id": 5
+      }
+    ]
+  }
