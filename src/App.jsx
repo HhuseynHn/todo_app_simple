@@ -17,7 +17,6 @@ function App() {
   const [selectedTodo, setSelectedTodo] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Todoları yüklə
   const fetchTodos = useCallback(async () => {
     try {
       setIsLoading(true);
@@ -31,14 +30,11 @@ function App() {
     }
   }, []);
 
-  // Komponent yükləndikdə todoları gətir
   useEffect(() => {
     fetchTodos();
   }, [fetchTodos]);
 
-  // Yeni todo əlavə et (Optimistic Update)
   const handleAddTodo = async (todoData) => {
-    // Müvəqqəti ID ilə optimistic update
     const tempId = Date.now();
     const tempTodo = {
       id: tempId,
@@ -51,25 +47,21 @@ function App() {
     setTodos((prevTodos) => [tempTodo, ...prevTodos]);
 
     try {
-      // API-yə göndər
       const newTodo = await createTodo(todoData);
-      // Müvəqqəti todo-nu real ilə əvəzlə
+
       setTodos((prevTodos) =>
         prevTodos.map((todo) => (todo.id === tempId ? newTodo : todo))
       );
     } catch (err) {
-      // Xəta olarsa, müvəqqəti todo-nu sil
       setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== tempId));
       setError(err.message);
     }
   };
 
-  // Todo-nu yenilə (Optimistic Update)
   const handleUpdateTodo = async (id, updatedData) => {
-    // Köhnə vəziyyəti saxla (rollback üçün)
     const previousTodos = [...todos];
 
-    // Dərhal UI-da yenilə
+    // Update UI
     setTodos((prevTodos) =>
       prevTodos.map((todo) =>
         todo.id === id ? { ...todo, ...updatedData } : todo
@@ -91,26 +83,22 @@ function App() {
     // Köhnə vəziyyəti saxla
     const previousTodos = [...todos];
 
-    // Dərhal UI-dan sil
     setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
 
     try {
       await deleteTodo(id);
     } catch (err) {
-      // Xəta olarsa, geri qaytar
       setTodos(previousTodos);
       setError(err.message);
       throw err;
     }
   };
 
-  // Todo-ya klikləndikdə
   const handleTodoClick = (todo) => {
     setSelectedTodo(todo);
     setIsModalOpen(true);
   };
 
-  // Modalı bağla
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedTodo(null);
@@ -196,10 +184,7 @@ function App() {
 
       {/* Footer */}
       <footer className="relative mt-16 text-center text-slate-500 text-sm">
-        <p>
-          React + Tailwind CSS ilə hazırlanıb{" "}
-          <span className="text-purple-400">♥</span>
-        </p>
+        <p>© 2026 Bütün hüquqlar qorunur.</p>
       </footer>
     </div>
   );
